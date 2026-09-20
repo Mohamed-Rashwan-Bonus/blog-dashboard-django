@@ -1,60 +1,45 @@
-# Blog + Dashboard — Django MVT (Portfolio Project 2)
+# Blog + Dashboard — Django MVT (Solo Build)
 
-Solo build — نفس ستاك الـ E-Shop: Django + SQLite/PostgreSQL + Bootstrap 5 + HTML/CSS/JS.
+![Django](https://img.shields.io/badge/Django-5.x-green) ![Bootstrap](https://img.shields.io/badge/Bootstrap-5-purple) ![SQLite](https://img.shields.io/badge/SQLite-ready-blue) ![Solo](https://img.shields.io/badge/Built-solo-orange)
 
-## الفكرة (للعميل العربي)
-موقع مقالات/أخبار مع لوحة تحكم: تسجيل دخول، إضافة/تعديل/حذف مقال، تعليقات، بحث، تصنيفات.
+مدونة عربية كاملة مع لوحة تحكم — نفس ستاك متجر E-Shop: **Django MVT + Bootstrap 5 + SQLite**.
 
-## هتبنيه في يوم واحد — Checklist
-- [ ] `py -m venv venv` + `pip install django pillow`
-- [ ] `django-admin startproject config .` + `python manage.py startapp blog`
-- [ ] Models:
-```python
-# blog/models.py
-from django.db import models
-from django.contrib.auth.models import User
+## Demo
+- Home: `http://127.0.0.1:8000/`
+- Admin: `http://127.0.0.1:8000/admin/` — demo: `demo / demo12345` (بعد تشغيل seed)
+- Register: `/accounts/register/` — Login: `/accounts/login/` — New post: `/new/`
 
-class Category(models.Model):
-    name = models.CharField(max_length=100, unique=True)
-    slug = models.SlugField(unique=True)
-    def __str__(self): return self.name
+## Features
+- مقالات بتصنيفات + بحث لحظي (`?q=`) + فلترة (`?category=slug`) + ترقيم صفحات (9/صفحة)
+- صفحة مقال مع تعليقات + عداد تعليقات
+- نشر/تعديل/حذف للمؤلف فقط (`LoginRequiredMixin` + queryset مقيد)
+- رفع صور (`Pillow`) + Admin كامل (بحث/فلترة) + رسائل Toast
+- تصميم RTL عربي متجاوب Bootstrap 5
 
-class Post(models.Model):
-    author = models.ForeignKey(User, on_delete=models.CASCADE)
-    category = models.ForeignKey(Category, on_delete=models.PROTECT)
-    title = models.CharField(max_length=200)
-    slug = models.SlugField(unique=True)
-    content = models.TextField()
-    image = models.ImageField(upload_to='posts/', blank=True, null=True)
-    created_at = models.DateTimeField(auto_now_add=True)
-    is_published = models.BooleanField(default=True)
-    def __str__(self): return self.title
-
-class Comment(models.Model):
-    post = models.ForeignKey(Post, related_name='comments', on_delete=models.CASCADE)
-    name = models.CharField(max_length=100)
-    body = models.TextField()
-    created_at = models.DateTimeField(auto_now_add=True)
-```
-- [ ] Admin: سجل الـ 3 موديلز في `admin.py`
-- [ ] Views: list + detail + search (`?q=`) + filter by category + Create/Update/Delete بـ `LoginRequiredMixin`
-- [ ] Templates بـ Bootstrap 5 (انسخ `base.html` من مشروع E-Shop عندك وغير الألوان)
-- [ ] Auth جاهز من Django: `/accounts/login/` + register بسيط
-- [ ] Seed: 5 مقالات تجريبية + سكرينتين
-
-## Run
+## Run (Windows — دقيقتين)
 ```powershell
+py -m venv venv
+.\venv\Scripts\activate
 pip install -r requirements.txt
 python manage.py migrate
-python manage.py createsuperuser
+python manage.py shell --command="exec(open('seed_demo.py',encoding='utf-8').read())"
 python manage.py runserver
 ```
+أو دبل كليك على `run.bat`.
 
-## للرفع على GitHub
-1. اعمل repo جديد `blog-dashboard-django`
-2. `git init; git add .; git commit -m "blog + dashboard solo"; git push`
-3. خد سكرينين (رئيسية + لوحة تحكم) وحطهم في README فوق + لينك اللايف لو رفعه على Render/PythonAnywhere
+## Structure
+```
+config/ (settings, urls) | blog/ (models, views, urls, forms, admin)
+templates/ (base, blog/*, registration/*) | static/css | seed_demo.py
+```
 
-## وصف جاهز لمستقل (انسخه)
-> **مدونة احترافية مع لوحة تحكم - Django + Bootstrap**
-> نظام مقالات كامل: تصنيفات، بحث لحظي، تعليقات، رفع صور، ولوحة تحكم للنشر والتعديل والحذف مع صلاحيات. بناء فردي كامل من الصفر بقاعدة SQLite/PostgreSQL وتصميم متجاوب.
+## Models
+`Category(name, slug)` — `Post(author, category, title, slug, content, image, is_published)` — `Comment(post, name, body)`
+
+## Screenshots
+حط هنا 2 سكرين (الرئيسية + صفحة مقال). مؤقتا استخدم أغلفة `../khamsat-covers/` عند الرفع لمستقل.
+
+## Author
+Solo build by **Mohamed Rashwan** — part of Django portfolio:
+- E-Shop: https://github.com/Mohamed-Rashwan-Bonus/eshop-django
+- Clinic booking: https://github.com/Mohamed-Rashwan-Bonus/clinic-booking-django
