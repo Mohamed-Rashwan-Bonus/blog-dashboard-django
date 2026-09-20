@@ -1,22 +1,15 @@
-# Blog + Dashboard — Django MVT (Solo Build)
+# مدونة بلوحة تحكم — Django
 
-![Django](https://img.shields.io/badge/Django-5.x-green) ![Bootstrap](https://img.shields.io/badge/Bootstrap-5-purple) ![SQLite](https://img.shields.io/badge/SQLite-ready-blue) ![Solo](https://img.shields.io/badge/Built-solo-orange)
+عملت المشروع ده عشان كان عندي عملاء بيطلبوا موقع مقالات بسيط مع لوحة تحكم عربي، فحبيت يكون عندي Base جاهز أعدل عليه.
 
-مدونة عربية كاملة مع لوحة تحكم — نفس ستاك متجر E-Shop: **Django MVT + Bootstrap 5 + SQLite**.
+## بيشتغل إزاي
+- الرئيسية: قايمة مقالات بتصنيفات + بحث + ترقيم صفحات
+- صفحة المقال: المحتوى + التعليقات + فورم تعليق
+- لو عايز تنشر: سجل حساب جديد من `/accounts/register/` وبعدها زرار "مقال جديد" بيظهر فوق
+- التعديل والحذف ظاهرين لصاحب المقال بس
+- الأدمن الكامل على `/admin/` (تصنيفات/مقالات/تعليقات)
 
-## Demo
-- Home: `http://127.0.0.1:8000/`
-- Admin: `http://127.0.0.1:8000/admin/` — demo: `demo / demo12345` (بعد تشغيل seed)
-- Register: `/accounts/register/` — Login: `/accounts/login/` — New post: `/new/`
-
-## Features
-- مقالات بتصنيفات + بحث لحظي (`?q=`) + فلترة (`?category=slug`) + ترقيم صفحات (9/صفحة)
-- صفحة مقال مع تعليقات + عداد تعليقات
-- نشر/تعديل/حذف للمؤلف فقط (`LoginRequiredMixin` + queryset مقيد)
-- رفع صور (`Pillow`) + Admin كامل (بحث/فلترة) + رسائل Toast
-- تصميم RTL عربي متجاوب Bootstrap 5
-
-## Run (Windows — دقيقتين)
+## التشغيل عندي (Windows)
 ```powershell
 py -m venv venv
 .\venv\Scripts\activate
@@ -25,21 +18,20 @@ python manage.py migrate
 python manage.py shell --command="exec(open('seed_demo.py',encoding='utf-8').read())"
 python manage.py runserver
 ```
-أو دبل كليك على `run.bat`.
+بعدها افتح `http://127.0.0.1:8000` وجرب حساب `demo / demo12345`.
 
-## Structure
-```
-config/ (settings, urls) | blog/ (models, views, urls, forms, admin)
-templates/ (base, blog/*, registration/*) | static/css | seed_demo.py
-```
+ملحوظة: الصور بتترفع في `media/` وهي معمولها ignore، والـ seed بيعمل 5 مقالات تجريبية وتعليق واحد على كل مقال.
 
-## Models
-`Category(name, slug)` — `Post(author, category, title, slug, content, image, is_published)` — `Comment(post, name, body)`
+## اللي اتعلمته وأنا ببنيه
+- السلاج العربي كان بيكسر الـ URL عشان `<slug:slug>` مبتقبلش عربي، فغيرتها لـ `<str:slug>`.
+- كنت بجيب `get_absolute_url` غلط في الأول مع الترقيم، ظبطها بعد التجربة.
+- التعليقات عملتها POST في نفس صفحة المقال عشان مفيش داعي لصفحة منفصلة.
 
-## Screenshots
-حط هنا 2 سكرين (الرئيسية + صفحة مقال). مؤقتا استخدم أغلفة `../khamsat-covers/` عند الرفع لمستقل.
+## الملفات المهمة
+`blog/models.py` (Category/Post/Comment) — `blog/views.py` (List/Detail/Create/Update/Delete) — `templates/blog/` — `seed_demo.py`
 
-## Author
-Solo build by **Mohamed Rashwan** — part of Django portfolio:
-- E-Shop: https://github.com/Mohamed-Rashwan-Bonus/eshop-django
-- Clinic booking: https://github.com/Mohamed-Rashwan-Bonus/clinic-booking-django
+## مشاريعي التانية
+- المتجر: https://github.com/Mohamed-Rashwan-Bonus/eshop-django
+- الحجوزات: https://github.com/Mohamed-Rashwan-Bonus/clinic-booking-django
+
+محمد رشوان — Django Full-Stack (القاهرة)

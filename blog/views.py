@@ -2,7 +2,7 @@ from django.views.generic import ListView, DetailView, CreateView, UpdateView, D
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login
-from django.shortcuts import redirect, get_object_or_404
+from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.db.models import Q, Count
 from django.contrib import messages
@@ -73,13 +73,15 @@ class PostDeleteView(LoginRequiredMixin, DeleteView):
         return super().delete(request, *args, **kwargs)
 
 def register_view(request):
-    if request.user.is_authenticated: return redirect('blog:post_list')
+    if request.user.is_authenticated:
+        return redirect('blog:post_list')
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
         if form.is_valid():
-            user = form.save(); login(request, user)
+            user = form.save()
+            login(request, user)
             messages.success(request, 'تم إنشاء حسابك بنجاح')
             return redirect('blog:post_list')
     else:
         form = UserCreationForm()
-    return __import__('django.shortcuts', fromlist=['render']).render(request, 'registration/register.html', {'form': form})
+    return render(request, 'registration/register.html', {'form': form})

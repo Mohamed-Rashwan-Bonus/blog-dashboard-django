@@ -1,4 +1,4 @@
-"""Django settings - blog-dashboard solo portfolio project (local + Render ready)."""
+# settings مشروع المدونة — local + render
 import os
 from pathlib import Path
 BASE_DIR = Path(__file__).resolve().parent.parent
