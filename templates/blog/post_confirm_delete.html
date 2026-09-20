@@ -1,0 +1,7 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="card mx-auto text-center" style="max-width:480px"><div class="card-body">
+<h5>حذف "{{ object.title }}"؟</h5>
+<form method="post">{% csrf_token %}<button class="btn btn-danger">تأكيد الحذف</button> <a class="btn btn-secondary" href="{{ object.get_absolute_url }}">تراجع</a></form>
+</div></div>
+{% endblock %}

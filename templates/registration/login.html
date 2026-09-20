@@ -1,0 +1,8 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="card mx-auto" style="max-width:480px"><div class="card-body">
+<h4>تسجيل الدخول</h4>
+<form method="post">{% csrf_token %}{{ form.as_p }}<button class="btn btn-primary w-100">دخول</button></form>
+<p class="mt-3 mb-0">معندكش حساب؟ <a href="{% url 'register' %}">سجل جديد</a></p>
+</div></div>
+{% endblock %}
