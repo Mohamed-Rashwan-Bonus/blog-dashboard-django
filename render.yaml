@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: blog-dashboard-django
+    runtime: python
+    buildCommand: "./build.sh"
+    startCommand: "gunicorn config.wsgi --log-file -"
+    envVars:
+      - key: DEBUG
+        value: "False"
+      - key: SECRET_KEY
+        generateValue: true
